@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Forbz\\source\\repos\\TrainingApi\\TrainingApi\\TrainingApi.csproj": {}
+    "C:\\Users\\Forbz\\source\\repos\\TrainingApi\\backend\\TrainingApi\\TrainingApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Forbz\\source\\repos\\TrainingApi\\TrainingApi\\TrainingApi.csproj": {
+    "C:\\Users\\Forbz\\source\\repos\\TrainingApi\\backend\\TrainingApi\\TrainingApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Forbz\\source\\repos\\TrainingApi\\TrainingApi\\TrainingApi.csproj",
+        "projectUniqueName": "C:\\Users\\Forbz\\source\\repos\\TrainingApi\\backend\\TrainingApi\\TrainingApi.csproj",
         "projectName": "TrainingApi",
-        "projectPath": "C:\\Users\\Forbz\\source\\repos\\TrainingApi\\TrainingApi\\TrainingApi.csproj",
+        "projectPath": "C:\\Users\\Forbz\\source\\repos\\TrainingApi\\backend\\TrainingApi\\TrainingApi.csproj",
         "packagesPath": "C:\\Users\\Forbz\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Forbz\\source\\repos\\TrainingApi\\TrainingApi\\obj\\",
+        "outputPath": "C:\\Users\\Forbz\\source\\repos\\TrainingApi\\backend\\TrainingApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

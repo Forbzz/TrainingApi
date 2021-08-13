@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Hji/DDOxaMDQRA7B6o0CQhMQz82IJeTQeYiMykTqAvqqFaLJQoDu2aj+pL6l6+iSlKbq6FVxJ5QcRF7VA6E38g==",
+  "dgSpecHash": "KcxhfvsdffCNsSYrKasOSkBwi3ZZwXV6jWR2fGjfkAidO6UliC20XY6F8KLVS5lKsbCjHMj8T7dXsCkWoR8HpA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Forbz\\source\\repos\\TrainingApi\\TrainingApi\\TrainingApi.csproj",
+  "projectFilePath": "C:\\Users\\Forbz\\source\\repos\\TrainingApi\\backend\\TrainingApi\\TrainingApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Forbz\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
     "C:\\Users\\Forbz\\.nuget\\packages\\castle.windsor\\5.1.1\\castle.windsor.5.1.1.nupkg.sha512",
