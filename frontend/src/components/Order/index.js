@@ -1,9 +1,10 @@
 import React from 'react'
-import OrderForm from "./OrderForm";
-import {useForm} from "../../hooks/useForm";
-import SearchFoodItems from "./SearchFoodItems";
-import OrderedFoodItems from "./OrderedFoodItems";
-import {Grid} from "@material-ui/core";
+import OrderForm from './OrderForm'
+import { useForm } from '../../hooks/useForm';
+import { Grid } from '@material-ui/core';
+import SearchFoodItems from './SearchFoodItems';
+import OrderedFoodItems from './OrderedFoodItems';
+
 
 const generateOrderNumber = () => Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -28,20 +29,7 @@ export default function Order(){
         resetFormControls
     } = useForm(getFreshModeObject());
 
-    const addFoodItem = foodItem =>{
-        let x = {
-            orderMasterId : values.orderMasterId,
-            orderDetailId : 0,
-            foodItemId : foodItem.foodItemId,
-            quantity : 1,
-            foodItemPrice : foodItem.foodItemPrice,
-            foodItemName : foodItem.foodItemName
-        }
-        setValues({
-            ...values,
-            orderDetails: [...values.orderDetails, x]
-        })
-    }
+
 
     return (
         <Grid container spacing={2}>
@@ -49,7 +37,7 @@ export default function Order(){
                 <OrderForm
                     {...{
                         values,
-
+                        setValues,
                         errors,
 
                         handleInputChange,
@@ -60,12 +48,20 @@ export default function Order(){
 
             <Grid item xs={6}>
                 <SearchFoodItems
-                    {...{addFoodItem}}
+                    {...
+                        {
+                            values,
+                            setValues
+                    }}
                 />
             </Grid>
             <Grid item xs={6}>
                 <OrderedFoodItems
-
+                    {...
+                        {
+                            values,
+                            setValues
+                    }}
                 />
             </Grid>
         </Grid>

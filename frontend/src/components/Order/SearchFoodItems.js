@@ -1,15 +1,6 @@
-import React, {useState, useEffect} from 'react'
-import {createAPIEndpoint, ENDPOINTS} from "../../api";
-import {
-    IconButton,
-    InputBase,
-    List,
-    ListItem,
-    ListItemSecondaryAction,
-    ListItemText,
-    makeStyles,
-    Paper
-} from "@material-ui/core";
+import React, { useState, useEffect } from 'react'
+import { createAPIEndpoint, ENDPOINTS } from "../../api";
+import { List, ListItem, ListItemText, Paper, InputBase, IconButton, makeStyles, ListItemSecondaryAction } from '@material-ui/core';
 import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
 import PlusOneIcon from '@material-ui/icons/PlusOne';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
@@ -45,64 +36,82 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function SearchFoodItems(props){
+export default function SearchFoodItems(props) {
 
-    const {addFoodItem} = props;
+    const { values, setValues } = props;
+    let orderedFoodItems = values.orderDetails;
 
-    const [foodItems, SetFoodItems] = useState([]);
+    const [foodItems, setFoodItems] = useState([]);
     const [searchList, setSearchList] = useState([]);
     const [searchKey, setSearchKey] = useState('');
     const classes = useStyles();
 
-    useEffect(()=>{
+    useEffect(() => {
         createAPIEndpoint(ENDPOINTS.FOODITEM).fetchAll()
             .then(res => {
-                SetFoodItems(res.data)
-                setSearchList(res.data)
+                setFoodItems(res.data);
+                setSearchList(res.data);
             })
             .catch(err => console.log(err))
+
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         let x = [...foodItems];
+
         x = x.filter(y => {
-            return y.foodItemName.toLowerCase().includes(searchKey.toLowerCase())
+            return y.foodItemName.toString().toLowerCase().includes(searchKey.toLocaleLowerCase())
+                && orderedFoodItems.every(item => item.foodItemName != y.foodItemName)
         });
         setSearchList(x);
+    }, [searchKey, orderedFoodItems])
 
-    },[searchKey])
-
+    const addFoodItem = foodItem => {
+        let x = {
+            orderMasterId: values.orderMasterId,
+            orderDetailId: 0,
+            foodItemId: foodItem.foodItemId,
+            quantity: 1,
+            foodItemPrice: foodItem.price,
+            foodItemName: foodItem.foodItemName
+        }
+        setValues({
+            ...values,
+            orderDetails: [...values.orderDetails, x]
+        })
+    }
 
     return (
         <>
-        <Paper className={classes.searchPaper}>
-            <InputBase
-                className={classes.searchInput}
-                value={searchKey}
-                onChange={e => setSearchKey(e.target.value)}
-                placeholder="Search food items" />
-            <IconButton>
-                <SearchTwoToneIcon />
-            </IconButton>
-        </Paper>
-        <List className={classes.listRoot}>
-            {
-                searchList.map((item,idx) => (
-                    <ListItem
-                        key={idx}>
-                        <ListItemText
-                            primary={item.foodItemName}
-                            secondary={'$'+item.price}/>
-                            <ListItemSecondaryAction onClick={e=>addFoodItem(item)}>
-                                <IconButton>
-                                    <PlusOneIcon/>
-                                    <ArrowForwardIosIcon/>
+            <Paper className={classes.searchPaper}>
+                <InputBase
+                    className={classes.searchInput}
+                    value={searchKey}
+                    onChange={e => setSearchKey(e.target.value)}
+                    placeholder="Search food items" />
+                <IconButton>
+                    <SearchTwoToneIcon />
+                </IconButton>
+            </Paper>
+            <List className={classes.listRoot}>
+                {
+                    searchList.map((item, idx) => (
+                        <ListItem
+                            key={idx}
+                            onClick={e => addFoodItem(item)}>
+                            <ListItemText
+                                primary={item.foodItemName}
+                                secondary={'$' + item.price} />
+                            <ListItemSecondaryAction>
+                                <IconButton onClick={e => addFoodItem(item)}>
+                                    <PlusOneIcon />
+                                    <ArrowForwardIosIcon />
                                 </IconButton>
                             </ListItemSecondaryAction>
-                    </ListItem>
-                ))
-            }
-        </List>
-            </>
+                        </ListItem>
+                    ))
+                }
+            </List>
+        </>
     )
 }

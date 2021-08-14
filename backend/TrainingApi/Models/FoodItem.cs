@@ -10,6 +10,7 @@ namespace TrainingApi.Models
     public class FoodItem
     {
         [Key]
+        [Column(name:"FoodItemId")]
         public int FooidItemId { get; set; }
 
         [Column(TypeName="nvarchar(100)")]

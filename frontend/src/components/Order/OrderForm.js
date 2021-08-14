@@ -9,6 +9,7 @@ import ReplayIcon from '@material-ui/icons/Replay';
 import RestaurantMenuIcon from '@material-ui/icons/RestaurantMenu';
 import ReorderIcon from '@material-ui/icons/Reorder';
 import {createAPIEndpoint, ENDPOINTS} from "../../api"
+import {roundToDecimalPoint} from "../../utils";
 
 const pMethods = [
     {id:'none', title : 'Select'},
@@ -41,7 +42,7 @@ const useStyle = makeStyles(theme => ({
 
 export default function OrderForm(props){
 
-    const {values, errors, handleInputChange} = props;
+    const {values, setValues, errors, handleInputChange} = props;
     const classes = useStyle();
 
     const [customerList, setCustomerList] = useState([]);
@@ -60,6 +61,17 @@ export default function OrderForm(props){
         })
         .catch(err => console.log(err))
     }, [])
+
+    useEffect(()=>{
+        let gTotal = values.orderDetails.reduce((tempTotal,item)=>{
+            return tempTotal + (item.quantity * item.foodItemPrice);
+        },0);
+        setValues({
+            ...values,
+            gTotal : roundToDecimalPoint(gTotal)
+        })
+
+    },[JSON.stringify(values.orderDetails)])
 
     return (
         <Form>
