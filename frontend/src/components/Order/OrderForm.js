@@ -10,6 +10,8 @@ import RestaurantMenuIcon from '@material-ui/icons/RestaurantMenu';
 import ReorderIcon from '@material-ui/icons/Reorder';
 import {createAPIEndpoint, ENDPOINTS} from "../../api"
 import {roundToDecimalPoint} from "../../utils";
+import Popup from "../../layouts/Popup";
+import OrderList from "./OrderList";
 
 const pMethods = [
     {id:'none', title : 'Select'},
@@ -42,10 +44,12 @@ const useStyle = makeStyles(theme => ({
 
 export default function OrderForm(props){
 
-    const {values, setValues, errors, handleInputChange} = props;
+    const {values, setValues, errors, setErrors,
+        handleInputChange, resetFormControls} = props;
     const classes = useStyle();
 
     const [customerList, setCustomerList] = useState([]);
+    const [orderListVisibility, setOrderListVisibility] = useState(false);
 
     useEffect(()=>{
     createAPIEndpoint(ENDPOINTS.CUSTOMER).fetchAll()
@@ -54,8 +58,6 @@ export default function OrderForm(props){
                 id : item.customerId,
                 title : item.customerName
             }));
-            console.log("ВНИМАНИЕ");
-            console.log(customerList);
             customerList = [{id: 0, title: 'Select'}].concat(customerList);
             setCustomerList(customerList);
         })
@@ -71,10 +73,36 @@ export default function OrderForm(props){
             gTotal : roundToDecimalPoint(gTotal)
         })
 
-    },[JSON.stringify(values.orderDetails)])
+    },[JSON.stringify(values.orderDetails)]);
+
+    const validateForm = () => {
+        let temp = {};
+        temp.customerId = values.customerId != 0 ? "" : "This field is required.";
+        temp.pMethod = values.pMethod != "none" ? "" : "This field is required.";
+        temp.orderDetails = values.orderDetails.length != 0 ? "" : "This field is required.";
+        setErrors({ ...temp });
+        return Object.values(temp).every(x => x === "");
+    }
+
+    const submitOrder = e =>{
+        e.preventDefault();
+        if(validateForm()){
+            console.log(values);
+            createAPIEndpoint(ENDPOINTS.ORDER).create(values)
+            .then(res=>{
+                resetFormControls();
+            })
+            .catch(err => console.log(err.response.data));
+        }
+    }
+
+    const openListOfOrders = () =>{
+        setOrderListVisibility(true);
+    }
 
     return (
-        <Form>
+        <>
+        <Form onSubmit={submitOrder}>
             <Grid container>
                 <Grid item xs={6}>
                     <Input
@@ -94,6 +122,7 @@ export default function OrderForm(props){
                         value={values.customerId}
                         onChange = {handleInputChange}
                         options={customerList}
+                        error={errors.customerId}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -103,6 +132,7 @@ export default function OrderForm(props){
                         value={values.pMethod}
                         onChange={handleInputChange}
                         options={pMethods}
+                        error={errors.pMethod}
                     />
                     <Input
                         disabled
@@ -128,9 +158,19 @@ export default function OrderForm(props){
                     <Button
                     size="large"
                     startIcon={<ReorderIcon/>}
+                    onClick={openListOfOrders}
                     >Orders</Button>
                 </Grid>
             </Grid>
         </Form>
+        <Popup
+        title="List of orders"
+        openPopup={orderListVisibility}
+        setOpenPopup={setOrderListVisibility}>
+            <OrderList
+                />
+
+        </Popup>
+        </>
     );
 }

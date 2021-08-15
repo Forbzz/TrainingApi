@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 
 export function useForm(getFreshModelObject) {
 
-    console.log(getFreshModelObject)
     const [values, setValues] = useState(getFreshModelObject);
     const [errors, setErrors] = useState({});
 

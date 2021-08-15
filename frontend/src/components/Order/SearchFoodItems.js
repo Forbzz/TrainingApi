@@ -70,7 +70,7 @@ export default function SearchFoodItems(props) {
         let x = {
             orderMasterId: values.orderMasterId,
             orderDetailId: 0,
-            foodItemId: foodItem.foodItemId,
+            foodItemId: foodItem.fooidItemId,
             quantity: 1,
             foodItemPrice: foodItem.price,
             foodItemName: foodItem.foodItemName
@@ -79,6 +79,7 @@ export default function SearchFoodItems(props) {
             ...values,
             orderDetails: [...values.orderDetails, x]
         })
+        console.log(x);
     }
 
     return (
