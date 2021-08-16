@@ -26,5 +26,8 @@ namespace TrainingApi.Models
         public Customer Customer { get; set; }
 
         public List<OrderDetail> OrderDetails { get; set; }
+
+        [NotMapped]
+        public string DeletedOrderItemIds { get; set; }
     }
 }

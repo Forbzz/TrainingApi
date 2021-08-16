@@ -50,6 +50,8 @@ export default function OrderForm(props){
 
     const [customerList, setCustomerList] = useState([]);
     const [orderListVisibility, setOrderListVisibility] = useState(false);
+    const [orderId, setOrderId] = useState(0);
+
 
     useEffect(()=>{
     createAPIEndpoint(ENDPOINTS.CUSTOMER).fetchAll()
@@ -75,6 +77,20 @@ export default function OrderForm(props){
 
     },[JSON.stringify(values.orderDetails)]);
 
+    useEffect(()=>{
+        if(orderId == 0)
+            resetFormControls()
+        else{
+            createAPIEndpoint(ENDPOINTS.ORDER).fetchById(orderId)
+                .then(res => {
+                    setValues(res.data);
+                    setErrors({});
+                })
+                .catch(err => console.log(err))
+
+        }
+    },[orderId]);
+
     const validateForm = () => {
         let temp = {};
         temp.customerId = values.customerId != 0 ? "" : "This field is required.";
@@ -87,12 +103,22 @@ export default function OrderForm(props){
     const submitOrder = e =>{
         e.preventDefault();
         if(validateForm()){
-            console.log(values);
-            createAPIEndpoint(ENDPOINTS.ORDER).create(values)
-            .then(res=>{
-                resetFormControls();
-            })
-            .catch(err => console.log(err.response.data));
+            if(values.orderMasterId == 0) {
+                console.log(values);
+                createAPIEndpoint(ENDPOINTS.ORDER).create(values)
+                    .then(res => {
+                        resetFormControls();
+                    })
+                    .catch(err => console.log(err.response.data));
+            }
+            else{
+                console.log(values);
+                createAPIEndpoint(ENDPOINTS.ORDER).update(values.orderMasterId, values)
+                    .then(res => {
+                        setOrderId(0);
+                    })
+                    .catch(err => console.log(err.response.data));
+            }
         }
     }
 
@@ -168,7 +194,7 @@ export default function OrderForm(props){
         openPopup={orderListVisibility}
         setOpenPopup={setOrderListVisibility}>
             <OrderList
-                />
+                {...{setOrderId, setOrderListVisibility}}  />
 
         </Popup>
         </>
