@@ -12,6 +12,7 @@ import {createAPIEndpoint, ENDPOINTS} from "../../api"
 import {roundToDecimalPoint} from "../../utils";
 import Popup from "../../layouts/Popup";
 import OrderList from "./OrderList";
+import Notification from "../../layouts/Notification"
 
 const pMethods = [
     {id:'none', title : 'Select'},
@@ -51,7 +52,7 @@ export default function OrderForm(props){
     const [customerList, setCustomerList] = useState([]);
     const [orderListVisibility, setOrderListVisibility] = useState(false);
     const [orderId, setOrderId] = useState(0);
-
+    const [notify, setNotify] = useState({isOpen:false})
 
     useEffect(()=>{
     createAPIEndpoint(ENDPOINTS.CUSTOMER).fetchAll()
@@ -100,6 +101,12 @@ export default function OrderForm(props){
         return Object.values(temp).every(x => x === "");
     }
 
+    const resetForm = () =>{
+        resetFormControls();
+        console.log(values);
+        //setOrderId(0);
+    }
+
     const submitOrder = e =>{
         e.preventDefault();
         if(validateForm()){
@@ -108,6 +115,7 @@ export default function OrderForm(props){
                 createAPIEndpoint(ENDPOINTS.ORDER).create(values)
                     .then(res => {
                         resetFormControls();
+                        setNotify({isOpen: true, message: 'order is created'})
                     })
                     .catch(err => console.log(err.response.data));
             }
@@ -116,6 +124,7 @@ export default function OrderForm(props){
                 createAPIEndpoint(ENDPOINTS.ORDER).update(values.orderMasterId, values)
                     .then(res => {
                         setOrderId(0);
+                        setNotify({isOpen: true, message: 'order is updated'})
                     })
                     .catch(err => console.log(err.response.data));
             }
@@ -178,13 +187,13 @@ export default function OrderForm(props){
                             type="submit">Submit</MuiButton>
                         <MuiButton
                             size="small"
-                            startIcon={<ReplayIcon/>}
-                            type="submit"/>
+                            onClick={resetForm}
+                            startIcon={<ReplayIcon/>}/>
                     </ButtonGroup>
                     <Button
-                    size="large"
-                    startIcon={<ReorderIcon/>}
-                    onClick={openListOfOrders}
+                        size="large"
+                        startIcon={<ReorderIcon/>}
+                        onClick={openListOfOrders}
                     >Orders</Button>
                 </Grid>
             </Grid>
@@ -194,9 +203,11 @@ export default function OrderForm(props){
         openPopup={orderListVisibility}
         setOpenPopup={setOrderListVisibility}>
             <OrderList
-                {...{setOrderId, setOrderListVisibility}}  />
+                {...{setOrderId, setOrderListVisibility, resetFormControls, setNotify}}  />
 
         </Popup>
+            <Notification
+                {...{notify, setNotify}}/>
         </>
     );
 }

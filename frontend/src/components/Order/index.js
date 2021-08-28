@@ -1,7 +1,7 @@
 import React from 'react'
 import OrderForm from './OrderForm'
 import { useForm } from '../../hooks/useForm';
-import { Grid } from '@material-ui/core';
+import {Container, Grid} from '@material-ui/core';
 import SearchFoodItems from './SearchFoodItems';
 import OrderedFoodItems from './OrderedFoodItems';
 
@@ -32,6 +32,7 @@ export default function Order(){
 
 
     return (
+        <Container maxWidth="md">
         <Grid container spacing={2}>
             <Grid item xs={12}>
                 <OrderForm
@@ -66,5 +67,6 @@ export default function Order(){
                 />
             </Grid>
         </Grid>
+        </Container>
     )
 }

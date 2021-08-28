@@ -78,7 +78,7 @@ export default function OrderedFoodItems(props){
             {orderedFoodItems.length == 0 ?
                 <ListItem>
                     <ListItemText
-                        primary="Please select food items"
+                        primary="Select food items"
                         primaryTypographyProps={{
                             style: {
                                 textAlign: 'center',

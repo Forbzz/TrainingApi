@@ -1,0 +1,27 @@
+.sign-in {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .title {
+        margin: 10px 0;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .log-button{
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        background-color:orange;
+    }
+
+}
+
+.my-form{
+    width: 50%;
+}

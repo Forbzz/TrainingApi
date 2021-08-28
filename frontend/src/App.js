@@ -1,16 +1,39 @@
 import logo from './logo.svg';
 import './App.css';
 import {Container, Typography} from "@material-ui/core";
-import Order from "./components/Order";
+import Order from "./components/order";
+import Header from "./components/header/header";
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import React from "react";
+import SignIn from "./components/sign-in/sign-in";
+
+class About extends React.Component{
+    render() {
+        return (
+            <div>
+                <h1>О нас</h1>
+            </div>
+        )
+    }
+}
 
 function App() {
   return (
-    <Container maxWidth="md">
-      <Typography variant="h2" align="center" gutterBottom>
-        Restaurant App
-      </Typography>
-        <Order/>
-    </Container>
+      <Router>
+        <Header/>
+          <Switch>
+              <Route exact path='/' component={Order}/>
+              <Route path='/about' component={About}/>
+              <Route path='/login' component={SignIn}/>
+              <Route path='/register'/>
+          </Switch>
+
+          {/*<Typography variant="h2" align="center" gutterBottom>*/}
+          {/*  Restaurant App*/}
+          {/*</Typography>*/}
+          {/*  <Order/>*/}
+
+      </Router>
   );
 }
 
