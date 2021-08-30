@@ -1,0 +1,25 @@
+.sign-in {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.sign-in .title {
+  margin: 10px 0;
+}
+.sign-in .buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.sign-in .log-button {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: orange;
+}
+
+.my-form {
+  width: 50%;
+}
+
+/*# sourceMappingURL=sign-up.css.map */

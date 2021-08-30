@@ -21,11 +21,13 @@ const Header = ({ currentUser }) => (
                     SIGN OUT
                 </div>
             ) : (
-                <Link to='/login' className='btn btn-success option progress-bar-animated progress-bar-striped progress-bar'>
-                    SIGN IN
+                <Link to='/register' className='btn btn-success option progress-bar-animated progress-bar-striped progress-bar'>
+                    SIGN UP
                 </Link>
             )}
-
+            <Link to='/login' className='btn btn-success option progress-bar-animated progress-bar-striped progress-bar'>
+                SIGN IN
+            </Link>
         </div>
 
     </div>

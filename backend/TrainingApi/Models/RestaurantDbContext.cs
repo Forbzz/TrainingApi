@@ -1,12 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrainingApi.Models
 {
-    public class RestaurantDbContext:DbContext
+    public class RestaurantDbContext:IdentityDbContext<User>
     {
         public RestaurantDbContext(DbContextOptions<RestaurantDbContext> options):base(options)
         {

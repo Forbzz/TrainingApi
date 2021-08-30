@@ -1,8 +1,9 @@
 import axios from "axios";
 
 
-const BASE_URL = "http://localhost:37621/api/";
+//const BASE_URL = "http://localhost:37621/api/";
 
+const BASE_URL = "http://localhost:44385/api/";
 const configAxios = {
     headers: {
         'Content-Type': 'application/json',
@@ -25,4 +26,18 @@ export const createAPIEndpoint = endpoint => {
         update: (id, updatedRecord) => axios.put(url + id, updatedRecord),
         delete: id => axios.delete(url + id)
     }
+}
+
+export const authHeader = () =>{
+    let token = localStorage.getItem('user');
+
+    if(token){
+        return {'Authorization': 'Bearer ' + token};
+    }else{
+        return {};
+    }
+}
+
+export const logout = () =>{
+    localStorage.removeItem('user');
 }

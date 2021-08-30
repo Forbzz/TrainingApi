@@ -1,13 +1,17 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using TrainingApi.Models;
 
@@ -32,8 +36,47 @@ namespace TrainingApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestaurantAPI", Version = "v1" });
             });
 
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.RequireHttpsMetadata = false;
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuer = true,
+            //            ValidIssuer = AuthOptions.ISSUER,
+            //            ValidateAudience = true,
+            //            ValidAudience = AuthOptions.AUDIENCE,
+            //            ValidateLifetime = true,
+            //            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            //            ValidateIssuerSigningKey = true,
+            //        };
+            //    });
+
             services.AddDbContext<RestaurantDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("LocalDb")));
+                options.UseSqlServer(Configuration.GetConnectionString("DbWithUser")));
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<RestaurantDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["JWT:ValidAudience"],
+                    ValidIssuer = Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                };
+            });
 
         }
 
@@ -43,7 +86,8 @@ namespace TrainingApi
             app.UseCors(options =>
             options.WithOrigins("http://localhost:3000")
             .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowAnyHeader()
+            .AllowCredentials());
 
             if (env.IsDevelopment())
             {
@@ -60,6 +104,7 @@ namespace TrainingApi
 
             app.UseRouting();
 
+            app.UseAuthentication();    
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
