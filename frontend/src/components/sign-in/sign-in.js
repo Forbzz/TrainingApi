@@ -14,25 +14,11 @@ const SignIn = () => {
     const [password, setPassword] = useState('')
     const [redirect, setRedirect] = useState(false);
 
-    const home = async event =>{
-        console.log("Тест api");
-        const response = await fetch("https://localhost:44385/api/Home",{
-            method: "GET",
-            headers: authHeader()
-        })
-        console.log(response);
-        const content = await response.json();
-        console.log(content);
-
-
-
-    }
-
     const handleSubmit = async event => {
         event.preventDefault()
         console.log("ВХОД");
 
-        const response = await fetch("https://localhost:44385/api/Authenticate/login",{
+        const response = await fetch("https://localhost:44344/api/Authenticate/login",{
             method: "POST",
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({
@@ -68,9 +54,6 @@ const SignIn = () => {
                     <button type='submit' className='btn btn-success option log-button'>Login</button>
                 </div>
             </form>
-            <div className="buttons">
-                <button type='submit' onClick={home} className='btn btn-success option log-button'>Home</button>
-            </div>
         </div>
     )
 }

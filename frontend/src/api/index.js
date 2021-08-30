@@ -1,9 +1,9 @@
 import axios from "axios";
 
 
-//const BASE_URL = "http://localhost:37621/api/";
+const BASE_URL = "http://localhost:44344/api/";
 
-const BASE_URL = "http://localhost:44385/api/";
+//const BASE_URL = "http://localhost:44385/api/";
 const configAxios = {
     headers: {
         'Content-Type': 'application/json',

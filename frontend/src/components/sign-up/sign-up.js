@@ -17,7 +17,7 @@ const SignUp = () => {
         event.preventDefault()
         console.log("Регистрация");
 
-        const response = await fetch("https://localhost:44385/api/Authenticate/register",{
+        const response = await fetch("https://localhost:44344/api/Authenticate/register",{
             method: "POST",
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({
